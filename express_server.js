@@ -11,6 +11,12 @@ const urlDatabase = {
   '9sm5xK': 'http://www.google.com',
 };
 
+//adding route for /urls
+app.get('/urls', (req, res) => {
+  const templateVars = { urlDatabaseObj: urlDatabase };
+  res.render('urls_index', templateVars);
+});
+
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
 });
