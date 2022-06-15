@@ -28,27 +28,47 @@ const urlDatabase = {
   '9sm5xK': 'http://www.google.com',
 };
 
+//Route to localhost:8080
 app.get('/', (req, res) => {
-  res.send('Welcome to TinyApp');
+  const templateVars = {
+    urls: urlDatabase,
+    username: req.cookies['username'],
+  };
+  res.render('urls_index', templateVars);
 });
 
-//adding route for /urls
+// //adding route for /urls
+// app.get('/urls', (req, res) => {
+//   const templateVars = { urls: urlDatabase };
+//   res.render('urls_index', templateVars);
+// });
+
+//Add a routes for /urls
 app.get('/urls', (req, res) => {
-  const templateVars = { urls: urlDatabase };
+  const templateVars = {
+    urls: urlDatabase,
+    username: req.cookies['username'],
+  };
   res.render('urls_index', templateVars);
 });
 
 app.get('/urls/new', (req, res) => {
-  res.render('urls_new');
+  const templateVars = {
+    urls: urlDatabase,
+    username: req.cookies['username'],
+  };
+  res.render('urls_new', templateVars);
 });
 
 //adding route for /urls/:shortURL
 app.get('/urls/:shortURL', (req, res) => {
   const shortURL = req.params.shortURL;
   const longURL = urlDatabase[shortURL];
+  const username = req.cookies['username'];
   const templateVars = {
     shortURL,
     longURL,
+    username,
   };
   res.render('urls_show', templateVars);
 });
@@ -77,11 +97,35 @@ app.post('/urls/:shortURL/delete', (req, res) => {
 //Create EDIT route using POST
 app.post('/urls/:id', (req, res) => {
   const id = req.params.id;
-
+  
+  const templateVars = {
+    username: req.cookies['username'],
+    urls: urlDatabase,
+  };
   res.redirect('/urls');
 });
 
 //Create route for login form
+app.post('/login', (req, res) => {
+  console.log(req.body);
+  const { username } = req.body; //getting username from the body
+  res.cookie('username', username); //save username in cookie
+
+  //update the templateVars to use for render urls_index
+  const templateVars = {
+    username: req.cookies['username'],
+    urls: urlDatabase,
+  };
+  res.render('urls_index', templateVars);
+});
+
+//Create route for log-out => clear the cookie when user logout
+app.post('/logout', (req, res) => {
+  //clearing the cookie is in fact how you log out
+  // having a cookies mean you are log in, how you know if the user is log in or not
+  res.clearCookie('username');
+  res.redirect('/urls');
+});
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
