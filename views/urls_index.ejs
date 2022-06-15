@@ -8,12 +8,12 @@
     />
     <style>
       .button-delete {
-        background: #ff4742;
-        border: 1px solid #ff4742;
+        background: #ffff;
+        border: 1px solid #d42436;
         border-radius: 6px;
         box-shadow: rgba(0, 0, 0, 0.1) 1px 2px 4px;
         box-sizing: border-box;
-        color: #ffffff;
+        color: #d42436;
         cursor: pointer;
         display: inline-block;
         font-family: nunito, roboto, proxima-nova, 'proxima nova', sans-serif;
@@ -33,11 +33,44 @@
       }
       .button-delete:hover,
       .button-delete:active {
-        background-color: initial;
+        background-color: #d42436;
         background-position: 0 0;
-        color: #ff4742;
+        color: #ffff;
       }
       .button-delete:active {
+        opacity: 0.5;
+      }
+      .button-edit {
+        background: #ffff;
+        border: 1px solid #248ed4;
+        border-radius: 6px;
+        box-shadow: rgba(0, 0, 0, 0.1) 1px 2px 4px;
+        box-sizing: border-box;
+        color: #248ed4;
+        cursor: pointer;
+        display: inline-block;
+        font-family: nunito, roboto, proxima-nova, 'proxima nova', sans-serif;
+        font-size: 16px;
+        font-weight: 800;
+        line-height: 16px;
+        min-height: 40px;
+        outline: 0;
+        padding: 12px 14px;
+        text-align: center;
+        text-rendering: geometricprecision;
+        text-transform: none;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+        vertical-align: middle;
+      }
+      .button-edit:hover,
+      .button-edit:active {
+        background-color: #248ed4;
+        background-position: 0 0;
+        color: #ffff;
+      }
+      .button-edit:active {
         opacity: 0.5;
       }
     </style>
@@ -61,6 +94,7 @@
           <tr>
             <th scope="col">Short URL</th>
             <th scope="col">Long URL</th>
+            <th scope="col">Edit</th>
             <th scope="col">Delete</th>
           </tr>
         </thead>
@@ -69,6 +103,11 @@
           <tr>
             <td><%= url %></td>
             <td><%= urls[url] %></td>
+            <td>
+              <form method="POST" action="/urls/<%= url %>/edit">
+                <button class="button-edit" role="button">Edit</button>
+              </form>
+            </td>
             <td>
               <form method="POST" action="/urls/<%= url %>/delete">
                 <button class="button-delete" role="button">Delete</button>
