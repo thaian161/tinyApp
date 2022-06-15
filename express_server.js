@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const PORT = 8080; // default port 8080
+const PORT = 3000; // default port 8080
 const morgan = require('morgan');
 //The body-parser library will convert the request body from a Buffer into string that we can read. It will then add the data to the req(request) object under the key body.
 const bodyParser = require('body-parser');
