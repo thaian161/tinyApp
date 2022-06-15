@@ -6,14 +6,15 @@
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
+
     <style>
       .button-delete {
         background: #ffff;
-        border: 1px solid #d42436;
+        border: 1px solid #ca4557;
         border-radius: 6px;
         box-shadow: rgba(0, 0, 0, 0.1) 1px 2px 4px;
         box-sizing: border-box;
-        color: #d42436;
+        color: #ca4557;
         cursor: pointer;
         display: inline-block;
         font-family: nunito, roboto, proxima-nova, 'proxima nova', sans-serif;
@@ -33,7 +34,7 @@
       }
       .button-delete:hover,
       .button-delete:active {
-        background-color: #d42436;
+        background-color: #ca4557;
         background-position: 0 0;
         color: #ffff;
       }
@@ -42,11 +43,11 @@
       }
       .button-edit {
         background: #ffff;
-        border: 1px solid #248ed4;
+        border: 1px solid #46cab8;
         border-radius: 6px;
         box-shadow: rgba(0, 0, 0, 0.1) 1px 2px 4px;
         box-sizing: border-box;
-        color: #248ed4;
+        color: #46cab8;
         cursor: pointer;
         display: inline-block;
         font-family: nunito, roboto, proxima-nova, 'proxima nova', sans-serif;
@@ -66,7 +67,7 @@
       }
       .button-edit:hover,
       .button-edit:active {
-        background-color: #248ed4;
+        background-color: #46cab8;
         background-position: 0 0;
         color: #ffff;
       }
@@ -74,6 +75,7 @@
         opacity: 0.5;
       }
     </style>
+
     <!-- Bootstrap CSS -->
     <link
       rel="stylesheet"
@@ -104,7 +106,7 @@
             <td><%= url %></td>
             <td><%= urls[url] %></td>
             <td>
-              <form method="POST" action="/urls/<%= url %>/edit">
+              <form method="POST" action="/urls">
                 <button class="button-edit" role="button">Edit</button>
               </form>
             </td>

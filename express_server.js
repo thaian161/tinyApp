@@ -72,6 +72,13 @@ app.post('/urls/:shortURL/delete', (req, res) => {
   res.redirect('/urls');
 });
 
+//Create EDIT route using POST
+app.post('/urls/:id', (req, res) => {
+  const id = req.params.id;
+
+  res.redirect('/urls');
+});
+
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
 });
