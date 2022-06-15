@@ -4,10 +4,12 @@ const PORT = 3000; // default port 8080
 const morgan = require('morgan');
 //The body-parser library will convert the request body from a Buffer into string that we can read. It will then add the data to the req(request) object under the key body.
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 
 app.set('view engine', 'ejs');
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 //Generate random 6 alphanumeric character to use for unique shortURL
 function generateRandomString() {
@@ -78,6 +80,8 @@ app.post('/urls/:id', (req, res) => {
 
   res.redirect('/urls');
 });
+
+//Create route for login form
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
