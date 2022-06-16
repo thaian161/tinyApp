@@ -1,4 +1,4 @@
-require('dotenv').config(); // Reads the content of .env and add them to process.env
+//require('dotenv').config(); // Reads the content of .env and add them to process.env
 const express = require('express'); // Imports the express framework / library
 const path = require('path'); // Compat for file paths
 const PORT = 3000; // default port 8080
@@ -22,14 +22,14 @@ app.use(express.json()); // Will parse the incoming payload (cargo / content / d
 app.use(bodyParser.urlencoded({ extended: true })); //// Will parse the incoming payload (cargo / content / data) from form -> Object
 app.use(cookieParser()); // Parses the cookie string to fancy cookie object
 app.use(express.static(path.join(__dirname, 'public'))); // Enables read access to the public folder in our server
-app.use(
-  cookieSession({
-    name: 'session',
-    key: 'abc',
-    // Cookie Options
-    maxAge: 24 * 60 * 60 * 1000, // 24 hours
-  })
-);
+// app.use(
+//   cookieSession({
+//     name: 'session',
+//     key: 'abc',
+//     // Cookie Options
+//     maxAge: 24 * 60 * 60 * 1000, // 24 hours
+//   })
+// );
 
 //=====GENERATE RANDOM STRING===========
 function generateRandomString() {
@@ -121,7 +121,8 @@ app.get('/urls/:shortURL', (req, res) => {
 app.post('/urls', (req, res) => {
   console.log(req.body); // Log the POST request body to the console
   const shortURL = generateRandomString();
-  urlDatabase[shortURL] = req.body.longURL;
+  urlDatabase[shortURL] = { longURL: req.body.longURL };
+  console.log(urlDatabase);
   res.redirect(`/urls/${shortURL}`);
 });
 
@@ -143,11 +144,13 @@ app.post('/urls/:shortURL/delete', (req, res) => {
 //==== Create EDIT route using POST ==========
 app.post('/urls/:id', (req, res) => {
   const id = req.params.id;
+  const longURL = urlDatabase[id].longURL;
   const user = users[req.cookies.userID];
   const templateVars = {
     user,
     urls: urlDatabase,
     id,
+    longURL,
   };
   res.redirect('/urls');
 });
@@ -166,6 +169,7 @@ app.post('/login', (req, res) => {
   const { email, password } = req.body; //use object shorthand instead 2 lines above
 
   const user = getUserByEmail(email, users);
+
   if (!user) {
     return res.status(403).send("User doesn't exist");
   }
@@ -180,20 +184,21 @@ app.post('/login', (req, res) => {
 
 //=====Create POST route for /logout => clear the cookie when user logout=============
 app.post('/logout', (req, res) => {
+  console.log('does it work?');
   //clearing the cookie is in fact how you log out
   // having a cookies mean you are log in, how you know if the user is log in or not
-  res.clearCookie('user');
-  res.redirect('/urls');
+  res.clearCookie('userID');
+  res.redirect('/login');
 });
 
 // checks if an email already exists in users
-const getUserByEmail = function (email, users) {
-  for (const id in users) {
-    if (users[id].email === email) {
-      return id;
+const getUserByEmail = function (email, database) {
+  for (const id in database) {
+    if (database[id].email === email) {
+      return database[id];
     }
   }
-  return false;
+  return undefined;
 };
 
 //======= GET route to /register ==========
