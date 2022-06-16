@@ -37,9 +37,10 @@ const users = {
 
 //Route to localhost:8080
 app.get('/', (req, res) => {
+  const user = users[req.cookies.userID];
   const templateVars = {
     urls: urlDatabase,
-    username: req.cookies['username'],
+    user,
   };
   res.render('urls_index', templateVars);
 });
@@ -52,9 +53,10 @@ app.get('/', (req, res) => {
 
 //Add a routes for /urls
 app.get('/urls', (req, res) => {
+  const user = users[req.cookies.userID];
   const templateVars = {
     urls: urlDatabase,
-    username: req.cookies['username'],
+    user,
   };
   res.render('urls_index', templateVars);
 });
@@ -120,23 +122,23 @@ app.get('/login', (req, res) => {
 });
 
 //Create route for login form
-// app.post('/login', (req, res) => {
-//   // console.log(req.body);
-//   const email = req.body.email;
-//   const password = req.body.password;
+app.post('/login', (req, res) => {
+  // console.log(req.body);
+  const email = req.body.email;
+  const password = req.body.password;
 
-//   const user = getUser(email);
-//   if (!user) {
-//     return res.status(403).send("User doesn't exist");
-//   }
-//   if (user.password !== password) {
-//     return res.status(403).send('Incorrect password');
-//   }
+  const user = getUser(email);
+  if (!user) {
+    return res.status(403).send("User doesn't exist");
+  }
+  if (user.password !== password) {
+    return res.status(403).send('Incorrect password');
+  }
 
-//   res.cookie('userID', user.id);
+  res.cookie('userID', user.id);
 
-//   res.redirect('/urls');
-// });
+  res.redirect('/urls');
+});
 
 //Create route for log-out => clear the cookie when user logout
 app.post('/logout', (req, res) => {

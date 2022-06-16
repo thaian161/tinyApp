@@ -59,15 +59,18 @@
       <button type="logout" class="button-login">LOG-OUT</button>
     </form>
 
-    <!-- Login Form -->
+    <!-- IF THERE IS NO USER -->
     <%} if (!user) { %>
-    <form class="form-inline" action="/login" method="POST">
+
+    <!-- log-in button -->
+    <form class="form-inline" action="/login" method="GET">
       <div class="form-group mb-2">
         <button type="login" class="button-login">LOG-IN</button>
       </div>
     </form>
 
-    <form class="form-inline" action="/register" method="get">
+    <!-- register button -->
+    <form class="form-inline" action="/register" method="GET">
       <div class="form-group mb-2">
         <button type="login" class="button-login">REGISTER</button>
       </div>
