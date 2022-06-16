@@ -99,23 +99,44 @@ const users = {
 
 //====GET route to local host==========
 app.get('/', (req, res) => {
-  const user = users[req.cookies.userID];
-  const templateVars = {
-    urls: urlDatabase,
-    user,
-  };
-  res.render('urls_index', templateVars);
-});
+  const userID = req.cookies.userID;
 
-//==== GET route to /urls ==========
-app.get('/urls', (req, res) => {
-  const user = users[req.cookies.userID];
+  const user = users[userID];
   const userURLS = urlsForUser(req.cookies.userID);
+
+  if (!user) {
+    return res.render('new-user');
+    // return res.send(
+    //   'Please <a href="/login">  Log-in </a> or Register first to use the app '
+    // );
+  }
   const templateVars = {
     urls: userURLS,
     user,
   };
-  res.render('urls_index', templateVars);
+  //user has login or registered
+  return res.render('urls_index', templateVars);
+});
+
+//==== GET route to /urls ==========
+app.get('/urls', (req, res) => {
+  const userID = req.cookies.userID;
+
+  const user = users[userID];
+  const userURLS = urlsForUser(req.cookies.userID);
+
+  if (!user) {
+    return res.render('new-user');
+    // return res.send(
+    //   'Please <a href="/login">  Log-in </a> or Register first to use the app '
+    // );
+  }
+  const templateVars = {
+    urls: userURLS,
+    user,
+  };
+  //user has login or registered
+  return res.render('urls_index', templateVars);
 });
 
 //==== GET route to /urls/new ==========
@@ -126,9 +147,10 @@ app.get('/urls/new', (req, res) => {
   const user = users[userID];
 
   if (!user) {
-    return res.send(
-      'Please <a href="/login">  Log-in </a> or Register first to use the app '
-    );
+    return res.render('new-user');
+    // return res.send(
+    //   'Please <a href="/login">  Log-in </a> or Register first to use the app '
+    // );
   }
 
   const templateVars = {
