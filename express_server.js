@@ -112,24 +112,31 @@ app.post('/urls/:id', (req, res) => {
   res.redirect('/urls');
 });
 
-//Create a GET route for login form
+//Refactor GET route for login form
 app.get('/login', (req, res) => {
-  const templateVars = {
-    username: req.cookies['username'],
-    urls: urlDatabase,
-  };
-
-  res.render('urls_index', templateVars);
+  const user = users[req.cookies.userID];
+  const templateVars = { urls: urlDatabase, user };
+  res.render('login', templateVars);
 });
 
 //Create route for login form
-app.post('/login', (req, res) => {
-  // console.log(req.body);
-  const { username } = req.body; //getting username from the body
-  res.cookie('username', username); //save username in cookie - set the cookie
+// app.post('/login', (req, res) => {
+//   // console.log(req.body);
+//   const email = req.body.email;
+//   const password = req.body.password;
 
-  res.redirect('/urls');
-});
+//   const user = getUser(email);
+//   if (!user) {
+//     return res.status(403).send("User doesn't exist");
+//   }
+//   if (user.password !== password) {
+//     return res.status(403).send('Incorrect password');
+//   }
+
+//   res.cookie('userID', user.id);
+
+//   res.redirect('/urls');
+// });
 
 //Create route for log-out => clear the cookie when user logout
 app.post('/logout', (req, res) => {
