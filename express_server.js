@@ -1,15 +1,35 @@
-const express = require('express');
-const app = express();
+require('dotenv').config(); // Reads the content of .env and add them to process.env
+const express = require('express'); // Imports the express framework / library
+const path = require('path'); // Compat for file paths
 const PORT = 3000; // default port 8080
 const morgan = require('morgan');
-//The body-parser library will convert the request body from a Buffer into string that we can read. It will then add the data to the req(request) object under the key body.
-const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser'); //The body-parser library will convert the request body from a Buffer into string that we can read. It will then add the data to the req(request) object under the key body.
+const cookieParser = require('cookie-parser'); // // Parses the cookie string to fancy cookie object
+const cookieSession = require('cookie-session'); // Parse & Encrypt / Decrypt the cookie string
+const bcrypt = require('bcryptjs'); // Hashing functionality for our app
 
-app.set('view engine', 'ejs');
-app.use(morgan('dev'));
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser());
+const app = express(); //Instantiate the express server and we call it app
+const app2 = express(); //an act of create an instance, we can have 2 express apps run at the same time
+const salt = bcrypt.genSaltSync(10); // Generate salt values for hashing
+
+//=====VIEW engine setup=====
+app.set('view engine', 'ejs'); // We specify what we want to use (EJS) as view engine
+app.set('views', path.join(__dirname, 'views')); // Specify where the templates are
+
+//====MIDDLEWARES======
+app.use(morgan('dev')); //// Activate the morgan the logger in "dev" mode
+app.use(express.json()); // Will parse the incoming payload (cargo / content / data) from JSON -> Object
+app.use(bodyParser.urlencoded({ extended: true })); //// Will parse the incoming payload (cargo / content / data) from form -> Object
+app.use(cookieParser()); // Parses the cookie string to fancy cookie object
+app.use(express.static(path.join(__dirname, 'public'))); // Enables read access to the public folder in our server
+app.use(
+  cookieSession({
+    name: 'session',
+    key: 'abc',
+    // Cookie Options
+    maxAge: 24 * 60 * 60 * 1000, // 24 hours
+  })
+);
 
 //Generate random 6 alphanumeric character to use for unique shortURL
 function generateRandomString() {
@@ -168,7 +188,7 @@ const getUserByEmail = function (email, users) {
       return id;
     }
   }
-  return undefined;
+  return false;
 };
 
 //GET route to register
@@ -180,16 +200,16 @@ app.get('/register', (req, res) => {
 
 //POST route to register
 app.post('/register', (req, res) => {
+  const userID = generateRandomString();
   const email = req.body.email;
   const password = req.body.password;
-  const userID = generateRandomString();
 
   if (email === '' || password === '') {
-    res.status(400).send('Error400: Missing either email or password');
+    return res.status(400).send('Error400: Missing either email or password');
   }
 
   if (getUserByEmail(email, users)) {
-    res.status(400).send('Error400: This email has been registered');
+    return res.status(400).send('Error400: This email has been registered');
   }
 
   users[userID] = {
