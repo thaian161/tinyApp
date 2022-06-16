@@ -112,11 +112,11 @@
 
             <!-- DISPLAY EDIT BUTTON -->
             <td>
-              <form method="POST" action="/urls">
+              <form method="GET" action="/urls/<%= url%>">
                 <button class="button-edit" role="button">Edit</button>
               </form>
             </td>
-            
+
             <!-- DISPLAY DELETE BUTTON -->
             <td>
               <form method="POST" action="/urls/<%= url %>/delete">

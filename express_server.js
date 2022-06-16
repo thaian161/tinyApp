@@ -31,7 +31,20 @@ app.use(express.static(path.join(__dirname, 'public'))); // Enables read access 
 //   })
 // );
 
-//=====GENERATE RANDOM STRING===========
+//================HELPER FUNCTIONS===============================
+//======FETCH USER URL (urls belong to users)=========
+const fetchUserUrls = (userID) => {
+  let userURLS = {};
+  for (let shortURL in urlDatabase) {
+    if (userID === urlDatabase[shortURL].userID) {
+      //this is an object, not an array so we cannot push
+      userURLS[shortURL] = urlDatabase[shortURL];
+    }
+  }
+  return userURLS;
+};
+
+//=====GENERATE RANDOM STRING=======================
 function generateRandomString() {
   let characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
   let result = '';
@@ -42,6 +55,16 @@ function generateRandomString() {
   }
   return result;
 }
+
+//===CHECK IF EMAIL ALREADY EXISTS IN USER OBJ===========
+const getUserByEmail = function (email, database) {
+  for (const id in database) {
+    if (database[id].email === email) {
+      return database[id];
+    }
+  }
+  return undefined;
+};
 
 //=======URL DATABASE===========
 const urlDatabase = {
@@ -87,8 +110,9 @@ app.get('/', (req, res) => {
 //==== GET route to /urls ==========
 app.get('/urls', (req, res) => {
   const user = users[req.cookies.userID];
+  const userURLS = fetchUserUrls(req.cookies.userID);
   const templateVars = {
-    urls: urlDatabase,
+    urls: userURLS,
     user,
   };
   res.render('urls_index', templateVars);
@@ -131,7 +155,10 @@ app.get('/urls/:shortURL', (req, res) => {
 app.post('/urls', (req, res) => {
   console.log(req.body); // Log the POST request body to the console
   const shortURL = generateRandomString();
-  urlDatabase[shortURL] = { longURL: req.body.longURL };
+  urlDatabase[shortURL] = {
+    longURL: req.body.longURL,
+    userID: req.cookies.userID,
+  };
   console.log(urlDatabase);
   res.redirect(`/urls/${shortURL}`);
 });
@@ -152,15 +179,16 @@ app.post('/urls/:shortURL/delete', (req, res) => {
 });
 
 //==== Create EDIT route using POST ==========
-app.post('/urls/:id', (req, res) => {
-  const id = req.params.id;
-  const longURL = urlDatabase[id].longURL;
+app.post('/urls/:shortURL', (req, res) => {
+  console.log('does it work?');
+  const shortURL = req.params.shortURL;
+
+  console.log('shortURL', shortURL);
+  const longURL = req.body.longURL;
   const user = users[req.cookies.userID];
-  const templateVars = {
-    user,
-    urls: urlDatabase,
-    id,
+  urlDatabase[shortURL] = {
     longURL,
+    userID: req.cookies.userID,
   };
   res.redirect('/urls');
 });
@@ -199,16 +227,6 @@ app.post('/logout', (req, res) => {
   res.clearCookie('userID');
   res.redirect('/login');
 });
-
-// checks if an email already exists in users
-const getUserByEmail = function (email, database) {
-  for (const id in database) {
-    if (database[id].email === email) {
-      return database[id];
-    }
-  }
-  return undefined;
-};
 
 //======= GET route to /register ==========
 app.get('/register', (req, res) => {
