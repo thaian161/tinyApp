@@ -33,7 +33,7 @@ app.use(express.static(path.join(__dirname, 'public'))); // Enables read access 
 
 //================HELPER FUNCTIONS===============================
 //======FETCH USER URL (urls belong to users)=========
-const fetchUserUrls = (userID) => {
+const urlsForUser = (userID) => {
   let userURLS = {};
   for (let shortURL in urlDatabase) {
     if (userID === urlDatabase[shortURL].userID) {
@@ -110,7 +110,7 @@ app.get('/', (req, res) => {
 //==== GET route to /urls ==========
 app.get('/urls', (req, res) => {
   const user = users[req.cookies.userID];
-  const userURLS = fetchUserUrls(req.cookies.userID);
+  const userURLS = urlsForUser(req.cookies.userID);
   const templateVars = {
     urls: userURLS,
     user,
@@ -120,22 +120,24 @@ app.get('/urls', (req, res) => {
 
 //==== GET route to /urls/new ==========
 app.get('/urls/new', (req, res) => {
-  const user = users[req.cookies.userID];
+  const userID = req.cookies.userID;
+  console.log(userID);
+
+  const user = users[userID];
+
+  if (!user) {
+    return res.send(
+      'Please <a href="/login">  Log-in </a> or Register first to use the app '
+    );
+  }
+
   const templateVars = {
     urls: urlDatabase,
     user,
   };
 
   //user has login or registered
-  if (user) {
-    return res.render('urls_new', templateVars);
-  }
-
-  //if user not log in or register
-  if (!user) {
-    // redirect to /login
-    return res.redirect('/login');
-  }
+  return res.render('urls_new', templateVars);
 });
 
 //==== GET route to /urls/:shortURL ==========
