@@ -29,10 +29,13 @@ const urlDatabase = {
 };
 
 const users = {
-  1: { id: 1, email: 'a@a.com', password: '123' },
-  2: { id: 2, email: 'hello@gmail.com', password: 'hello' },
-  3: { id: 3, email: 'thaian161@yahoo.com', password: 'thaian' },
-  4: { id: 4, email: 'hai@bui.com', password: 'hai' },
+  userRandomID: { id: 'userRandomID', email: 'a@b.com', password: '123' },
+  userRandomID: {
+    id: 'userRandomID',
+    email: 'thaian161@yahoo.com',
+    password: 'thaian',
+  },
+  userRandomID: { id: 'userRandomID', email: 'hai@bui.com', password: 'hai' },
 };
 
 //Route to localhost:8080
