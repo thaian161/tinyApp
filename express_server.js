@@ -29,13 +29,21 @@ const urlDatabase = {
 };
 
 const users = {
-  userRandomID: { id: 'userRandomID', email: 'a@b.com', password: '123' },
+  userRandomID: {
+    id: 'userRandomID',
+    email: 'a@b.com',
+    password: '123',
+  },
   userRandomID: {
     id: 'userRandomID',
     email: 'thaian161@yahoo.com',
     password: 'thaian',
   },
-  userRandomID: { id: 'userRandomID', email: 'hai@bui.com', password: 'hai' },
+  userRandomID: {
+    id: 'userRandomID',
+    email: 'hai@bui.com',
+    password: 'hai',
+  },
 };
 
 //Route to localhost:8080
@@ -149,7 +157,7 @@ app.post('/login', (req, res) => {
 app.post('/logout', (req, res) => {
   //clearing the cookie is in fact how you log out
   // having a cookies mean you are log in, how you know if the user is log in or not
-  res.clearCookie('username');
+  res.clearCookie('user');
   res.redirect('/urls');
 });
 
