@@ -26,11 +26,11 @@ function generateRandomString() {
 const urlDatabase = {
   b2xVn2: {
     userID: 'b2xVn2',
-    longURL: 'http://www.lighthouselabs.ca',
+    longURL: 'https://www.linkedin.com/in/anbui161/',
   },
   '9sm5xK': {
     userID: '9sm5xK',
-    longURL: 'http://www.google.com',
+    longURL: 'https://github.com/thaian161',
   },
 };
 
