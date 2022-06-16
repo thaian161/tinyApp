@@ -146,7 +146,7 @@ app.post('/login', (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
 
-  const user = getUser(email);
+  const user = getUserByEmail(email, users);
   if (!user) {
     return res.status(403).send("User doesn't exist");
   }
@@ -167,13 +167,14 @@ app.post('/logout', (req, res) => {
   res.redirect('/urls');
 });
 
-const getUser = (email) => {
-  for (const user in users) {
-    if (email === users[user].email) {
-      return users[user];
+// checks if an email already exists in users
+const getUserByEmail = function (email, users) {
+  for (const id in users) {
+    if (users[id].email === email) {
+      return id;
     }
   }
-  return false;
+  return undefined;
 };
 
 //GET route to register
@@ -193,7 +194,7 @@ app.post('/register', (req, res) => {
     res.status(400).send('Error400: Missing either email or password');
   }
 
-  if (getUser(email)) {
+  if (getUserByEmail(email, users)) {
     res.status(400).send('Error400: This email has been registered');
   }
 
@@ -205,6 +206,11 @@ app.post('/register', (req, res) => {
 
   res.cookie('userID', userID);
   res.redirect('/urls');
+});
+
+// wild card => caught all werid paths request from user
+app.get('*', (req, res) => {
+  res.redirect('/register');
 });
 
 app.listen(PORT, () => {
