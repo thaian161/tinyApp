@@ -28,6 +28,13 @@ const urlDatabase = {
   '9sm5xK': 'http://www.google.com',
 };
 
+const users = {
+  1: { id: 1, email: 'a@a.com', password: '123' },
+  2: { id: 2, email: 'hello@gmail.com', password: 'hello' },
+  3: { id: 3, email: 'thaian161@yahoo.com', password: 'thaian' },
+  4: { id: 4, email: 'hai@bui.com', password: 'hai' },
+};
+
 //Route to localhost:8080
 app.get('/', (req, res) => {
   const templateVars = {
@@ -129,6 +136,46 @@ app.post('/logout', (req, res) => {
   //clearing the cookie is in fact how you log out
   // having a cookies mean you are log in, how you know if the user is log in or not
   res.clearCookie('username');
+  res.redirect('/urls');
+});
+
+const getUser = (email) => {
+  for (const user in users) {
+    if (email === users[user].email) {
+      return users[user];
+    }
+  }
+  return false;
+};
+
+//GET route to register
+app.get('/register', (req, res) => {
+  const user = users[req.cookies.userID];
+  const templateVars = { urls: urlDatabase, user };
+  res.render('register', templateVars);
+});
+
+//POST route to register
+app.post('/register', (req, res) => {
+  const email = req.body.email;
+  const password = req.body.password;
+  const userID = generateRandomString();
+
+  if (email === '' || password === '') {
+    res.status(400).send('Error400: Missing either email or password');
+  }
+
+  if (getUser(email)) {
+    res.status(400).send('Error400: This email has been registered');
+  }
+
+  users[userID] = {
+    id: userID,
+    email,
+    password,
+  };
+
+  res.cookie('userID', userID);
   res.redirect('/urls');
 });
 

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+  </head>
+  <body>
+    <!-- insert header from _header -->
+    <%- include('partials/_header') %>
+    
+    <div class="card text-center">
+      <div class="card-footer text-muted" style="align-self: center">
+        <div class="card-body" 
+    <main class="form jumbotron">
+      <h3 style="color:#356859"  class="heading">REGISTRATION</h3>
+      <h6 style="color:#FD5523"   class="heading">Fill out the form below:</h6>
+
+      <!-- EMAIL -->
+      <form action="/register'" method="POST">
+        <div class="form-group">
+          <input
+            class="form-control"
+            type="email"
+            name="email"
+            placeholder="📧"
+            required
+          />
+        </div>
+
+        <!-- PASSWORD -->
+        <div class="form-group">
+          <input
+            class="form-control"
+            type="password"
+            name="password"
+            placeholder="▪️▪️▪️"
+            required
+          />
+        </div>
+
+        <!-- REGISTER BUTTON -->
+        <button type="submit" class="button-register">REGISTER</button>
+      </form>
+      </main>
+    
+    </main>
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+      integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+      crossorigin="anonymous"
+    />
+
+    <!-- Bootstrap JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+  <div>
+    <br>
+    <br>
+  </div>
+  <!-- insert header from _footer -->
+  <%- include('partials/_footer') %>
+</html>
+
+<style> 
+  .button-register {
+       background: #FA6C41;
+       border: 1px solid #FA6C41;
+       border-radius: 6px;
+       box-shadow: rgba(0, 0, 0, 0.1) 1px 2px 4px;
+       box-sizing: border-box;
+       color: white;
+       cursor: pointer;
+       display: inline-block;
+       font-family: nunito, roboto, proxima-nova, 'proxima nova', sans-serif;
+       font-size: 16px;
+       font-weight: 800;
+       line-height: 16px;
+       min-height: 40px;
+       outline: 0;
+       padding: 12px 14px;
+       text-align: center;
+       text-rendering: geometricprecision;
+       text-transform: none;
+       user-select: none;
+       -webkit-user-select: none;
+       touch-action: manipulation;
+       vertical-align: middle;
+     }
+     
+ </style>
+
