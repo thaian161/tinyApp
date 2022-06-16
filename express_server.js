@@ -97,7 +97,7 @@ app.post('/urls/:shortURL/delete', (req, res) => {
 //Create EDIT route using POST
 app.post('/urls/:id', (req, res) => {
   const id = req.params.id;
-  
+
   const templateVars = {
     username: req.cookies['username'],
     urls: urlDatabase,
@@ -105,18 +105,23 @@ app.post('/urls/:id', (req, res) => {
   res.redirect('/urls');
 });
 
-//Create route for login form
-app.post('/login', (req, res) => {
-  console.log(req.body);
-  const { username } = req.body; //getting username from the body
-  res.cookie('username', username); //save username in cookie
-
-  //update the templateVars to use for render urls_index
+//Create a GET route for login form
+app.get('/login', (req, res) => {
   const templateVars = {
     username: req.cookies['username'],
     urls: urlDatabase,
   };
+
   res.render('urls_index', templateVars);
+});
+
+//Create route for login form
+app.post('/login', (req, res) => {
+  // console.log(req.body);
+  const { username } = req.body; //getting username from the body
+  res.cookie('username', username); //save username in cookie - set the cookie
+
+  res.redirect('/urls');
 });
 
 //Create route for log-out => clear the cookie when user logout
