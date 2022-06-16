@@ -74,11 +74,11 @@ app.get('/urls/new', (req, res) => {
 app.get('/urls/:shortURL', (req, res) => {
   const shortURL = req.params.shortURL;
   const longURL = urlDatabase[shortURL];
-  const username = req.cookies['username'];
+  const user = users[req.cookies.userID];
   const templateVars = {
     shortURL,
     longURL,
-    username,
+    user,
   };
   res.render('urls_show', templateVars);
 });
@@ -107,10 +107,11 @@ app.post('/urls/:shortURL/delete', (req, res) => {
 //Create EDIT route using POST
 app.post('/urls/:id', (req, res) => {
   const id = req.params.id;
-
+  const user = users[req.cookies.userID];
   const templateVars = {
-    username: req.cookies['username'],
+    user,
     urls: urlDatabase,
+    id,
   };
   res.redirect('/urls');
 });
