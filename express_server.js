@@ -62,12 +62,6 @@ app.get('/', (req, res) => {
   res.render('urls_index', templateVars);
 });
 
-// //adding route for /urls
-// app.get('/urls', (req, res) => {
-//   const templateVars = { urls: urlDatabase };
-//   res.render('urls_index', templateVars);
-// });
-
 //Add a routes for /urls
 app.get('/urls', (req, res) => {
   const user = users[req.cookies.userID];
