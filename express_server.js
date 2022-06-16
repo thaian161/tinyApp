@@ -45,16 +45,17 @@ const urlsForUser = (userID) => {
 };
 
 //=====GENERATE RANDOM STRING=======================
-function generateRandomString() {
-  let characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
-  let result = '';
-  let charactersLength = characters.length;
+const generateRandomString = () => {
+  return Math.random().toString(36).substring(2, 6);
+  // let characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  // let result = '';
+  // let charactersLength = characters.length;
 
-  for (let i = 0; i < 5; i++) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-  return result;
-}
+  // for (let i = 0; i < 5; i++) {
+  //   result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  // }
+  // return result;
+};
 
 //===CHECK IF EMAIL ALREADY EXISTS IN USER OBJ===========
 const getUserByEmail = function (email, database) {
