@@ -13,12 +13,12 @@
 
   <style> 
    .button-submit {
-        background: #b9e4c9;
-        border: 1px solid #b9e4c9;
+        background: #356859;
+        border: 1px solid #356859;
         border-radius: 6px;
         box-shadow: rgba(0, 0, 0, 0.1) 1px 2px 4px;
         box-sizing: border-box;
-        color: #356859;
+        color: white;
         cursor: pointer;
         display: inline-block;
         font-family: nunito, roboto, proxima-nova, 'proxima nova', sans-serif;
@@ -38,9 +38,10 @@
       }
       .button-submit:hover,
       .button-submit:active {
-        background-color: #356859;
+        background-color:  #FEE7DF;
+        border-color: #FEE7DF;
         background-position: 0 0;
-        color: #b9e4c9;
+        color: #FD5923;
       }
       .button-submit:active {
         opacity: 0.5;
@@ -55,17 +56,17 @@
 
       <div class="card-header"></div>
       <div class="card-body">
-        <h5 class="card-title">TinyURL for: <%= longURL %></h5>
+        <h5 style="color: #356859;"  class="card-title">TinyURL for: <%= longURL %></h5>
         <p class="card-text">
           Short URL: <a href="<%= longURL %>"><%= shortURL %></a></p>
       </div>
 
       <div class="card-footer text-muted" style="align-self: center">
         <div class="card-body" style="align-self: center;">
-          <h5 class="card-title">Edit</h5>
+          <h5 style="color: #FD5923;"   class="card-title">Let's Edit Your Long URL</h5>
           <p class="card-text">
           <form class="form-inline text-center" action="/urls" method="POST">
-            <label> New URL:</label></p>
+            <label> <strong>New URL:</strong> </label></p>
               <input 
                 class="form-control"
                 type="text"
@@ -73,7 +74,7 @@
                 placeholder="http://"
                 style="width: 300px; margin: 1em"
               />
-              <button class="button-submit" role="button">Edit</button>
+              <button class="button-submit" role="button">Update</button>
           </p>
         </div>
       </form>
@@ -106,3 +107,10 @@
  <!-- insert header from _footer -->
  <%- include('partials/_footer') %>
 </html>
+
+ <style>
+  .card-footer{
+    background-color: #EAF6EF;
+    border-block-color: #EAF6EF;
+  }
+ </style>
