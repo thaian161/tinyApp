@@ -102,8 +102,10 @@
         <tbody>
           <% for(let url in urls) { %>
           <tr>
-            <td><%= url %></td>
-            <td><%= urls[url] %></td>
+            <td class="align-middle">
+              <a href="/u/<%= url %>"><%= url %></a>
+            </td>
+            <td class="align-middle"><%= urls[url] %></td>
             <td>
               <form method="POST" action="/urls">
                 <button class="button-edit" role="button">Edit</button>
