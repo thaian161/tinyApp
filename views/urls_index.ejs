@@ -102,15 +102,22 @@
         <tbody>
           <% for(let url in urls) { %>
           <tr>
+            <!-- DISPLAY SHORT URLs -->
             <td class="align-middle">
               <a href="<%= urls[url].longURL %>"><%= url %></a>
             </td>
+
+            <!-- DISPLAY LONG URLs -->
             <td class="align-middle"><%= urls[url].longURL %></td>
+
+            <!-- DISPLAY EDIT BUTTON -->
             <td>
               <form method="POST" action="/urls">
                 <button class="button-edit" role="button">Edit</button>
               </form>
             </td>
+            
+            <!-- DISPLAY DELETE BUTTON -->
             <td>
               <form method="POST" action="/urls/<%= url %>/delete">
                 <button class="button-delete" role="button">Delete</button>

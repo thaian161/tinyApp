@@ -101,7 +101,17 @@ app.get('/urls/new', (req, res) => {
     urls: urlDatabase,
     user,
   };
-  res.render('urls_new', templateVars);
+
+  //user has login or registered
+  if (user) {
+    return res.render('urls_new', templateVars);
+  }
+
+  //if user not log in or register
+  if (!user) {
+    // redirect to /login
+    return res.redirect('/login');
+  }
 });
 
 //==== GET route to /urls/:shortURL ==========
@@ -184,7 +194,6 @@ app.post('/login', (req, res) => {
 
 //=====Create POST route for /logout => clear the cookie when user logout=============
 app.post('/logout', (req, res) => {
-  console.log('does it work?');
   //clearing the cookie is in fact how you log out
   // having a cookies mean you are log in, how you know if the user is log in or not
   res.clearCookie('userID');
