@@ -16,7 +16,7 @@ const salt = bcrypt.genSaltSync(10); // Generate salt values for hashing
 app.set('view engine', 'ejs'); // We specify what we want to use (EJS) as view engine
 app.set('views', path.join(__dirname, 'views')); // Specify where the templates are
 
-//====MIDDLEWARES======
+//====MIDDLEWARES==========
 app.use(morgan('dev')); //// Activate the morgan the logger in "dev" mode
 app.use(express.json()); // Will parse the incoming payload (cargo / content / data) from JSON -> Object
 app.use(bodyParser.urlencoded({ extended: true })); //// Will parse the incoming payload (cargo / content / data) from form -> Object
@@ -31,7 +31,7 @@ app.use(
   })
 );
 
-//Generate random 6 alphanumeric character to use for unique shortURL
+//=====GENERATE RANDOM STRING===========
 function generateRandomString() {
   let characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
   let result = '';
@@ -43,6 +43,7 @@ function generateRandomString() {
   return result;
 }
 
+//=======URL DATABASE===========
 const urlDatabase = {
   b2xVn2: {
     userID: 'b2xVn2',
@@ -54,6 +55,7 @@ const urlDatabase = {
   },
 };
 
+//=======USERS DATABASE===========
 const users = {
   userRandomID: {
     id: 'userRandomID',
@@ -72,7 +74,7 @@ const users = {
   },
 };
 
-//Route to localhost:8080
+//====GET route to local host==========
 app.get('/', (req, res) => {
   const user = users[req.cookies.userID];
   const templateVars = {
@@ -82,7 +84,7 @@ app.get('/', (req, res) => {
   res.render('urls_index', templateVars);
 });
 
-//Add a routes for /urls
+//==== GET route to /urls ==========
 app.get('/urls', (req, res) => {
   const user = users[req.cookies.userID];
   const templateVars = {
@@ -92,6 +94,7 @@ app.get('/urls', (req, res) => {
   res.render('urls_index', templateVars);
 });
 
+//==== GET route to /urls/new ==========
 app.get('/urls/new', (req, res) => {
   const user = users[req.cookies.userID];
   const templateVars = {
@@ -101,7 +104,7 @@ app.get('/urls/new', (req, res) => {
   res.render('urls_new', templateVars);
 });
 
-//adding route for /urls/:shortURL
+//==== GET route to /urls/:shortURL ==========
 app.get('/urls/:shortURL', (req, res) => {
   const shortURL = req.params.shortURL;
   const longURL = urlDatabase[shortURL];
@@ -114,6 +117,7 @@ app.get('/urls/:shortURL', (req, res) => {
   res.render('urls_show', templateVars);
 });
 
+//==== POST route to /urls ==========
 app.post('/urls', (req, res) => {
   console.log(req.body); // Log the POST request body to the console
   const shortURL = generateRandomString();
@@ -121,13 +125,14 @@ app.post('/urls', (req, res) => {
   res.redirect(`/urls/${shortURL}`);
 });
 
+//==== GET route to /urls/:shortURL ==========
 app.get('/u/:shortURL', (req, res) => {
   const longURL = urlDatabase[req.params.shortURL];
 
   res.redirect(longURL);
 });
 
-//Create DELETE route using POST
+//==== Create DELETE route using POST ==========
 app.post('/urls/:shortURL/delete', (req, res) => {
   const shortURL = req.params.shortURL;
 
@@ -135,7 +140,7 @@ app.post('/urls/:shortURL/delete', (req, res) => {
   res.redirect('/urls');
 });
 
-//Create EDIT route using POST
+//==== Create EDIT route using POST ==========
 app.post('/urls/:id', (req, res) => {
   const id = req.params.id;
   const user = users[req.cookies.userID];
@@ -147,18 +152,18 @@ app.post('/urls/:id', (req, res) => {
   res.redirect('/urls');
 });
 
-//Refactor GET route for login form
+//==== GET route to /login ==========
 app.get('/login', (req, res) => {
   const user = users[req.cookies.userID];
   const templateVars = { urls: urlDatabase, user };
   res.render('login', templateVars);
 });
 
-//Create route for login form
+//==== POST route to /login ==========
 app.post('/login', (req, res) => {
-  // console.log(req.body);
-  const email = req.body.email;
-  const password = req.body.password;
+  // const email = req.body.email;
+  // const password = req.body.password;
+  const { email, password } = req.body; //use object shorthand instead 2 lines above
 
   const user = getUserByEmail(email, users);
   if (!user) {
@@ -173,7 +178,7 @@ app.post('/login', (req, res) => {
   res.redirect('/urls');
 });
 
-//Create route for log-out => clear the cookie when user logout
+//=====Create POST route for /logout => clear the cookie when user logout=============
 app.post('/logout', (req, res) => {
   //clearing the cookie is in fact how you log out
   // having a cookies mean you are log in, how you know if the user is log in or not
@@ -191,14 +196,14 @@ const getUserByEmail = function (email, users) {
   return false;
 };
 
-//GET route to register
+//======= GET route to /register ==========
 app.get('/register', (req, res) => {
   const user = users[req.cookies.userID];
   const templateVars = { urls: urlDatabase, user };
   res.render('register', templateVars);
 });
 
-//POST route to register
+//======= POST route to /register ==========
 app.post('/register', (req, res) => {
   const userID = generateRandomString();
   const email = req.body.email;
@@ -222,11 +227,12 @@ app.post('/register', (req, res) => {
   res.redirect('/urls');
 });
 
-// wild card => caught all werid paths request from user
+//======= GET route to wild card => caught all werid paths request from user=======
 app.get('*', (req, res) => {
   res.redirect('/register');
 });
 
+//====App listen on PORT==============
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
 });
