@@ -5,7 +5,7 @@ TinyApp is a full stack web application built with Node and Express that allows 
 This is my second project at LHL after [Lotide](https://github.com/thaian161/lotide) - a mini clone of [Lodash](https://lodash.com) library.
 <br>
 <br>
-Upon ***creating an account and logging in***, users can ***shorten***, ***edit*** and ***delete*** URLs . User accounts are protected with ***cookies and password encryption*** using cookies-session, bcrypt, hash, and salt. This ensures that only authenticated users can access their URL storage. 
+Upon ***creating an account and logging in***, users can ***shorten***, ***edit*** and ***delete*** URLs. User accounts are protected with ***cookies and password encryption*** using cookies-session, bcrypt, hash, and salt. This ensures that only authenticated users can access their URL storage. 
 
 ## Final Product
 ### [👋 Watch Live Demo Here 👋](https://youtu.be/6-6upefRgmw)
