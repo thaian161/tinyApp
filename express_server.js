@@ -22,14 +22,12 @@ app.use(express.json()); // Will parse the incoming payload (cargo / content / d
 app.use(bodyParser.urlencoded({ extended: true })); //// Will parse the incoming payload (cargo / content / data) from form -> Object
 app.use(cookieParser()); // Parses the cookie string to fancy cookie object
 app.use(express.static(path.join(__dirname, 'public'))); // Enables read access to the public folder in our server
-// app.use(
-//   cookieSession({
-//     name: 'session',
-//     key: 'abc',
-//     // Cookie Options
-//     maxAge: 24 * 60 * 60 * 1000, // 24 hours
-//   })
-// );
+app.use(
+  cookieSession({
+    name: 'session',
+    keys: ['my', 'key'],
+  })
+);
 
 //================HELPER FUNCTIONS===============================
 //======FETCH USER URL (urls belong to users)=========
@@ -47,14 +45,6 @@ const urlsForUser = (userID) => {
 //=====GENERATE RANDOM STRING=======================
 const generateRandomString = () => {
   return Math.random().toString(36).substring(2, 6);
-  // let characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
-  // let result = '';
-  // let charactersLength = characters.length;
-
-  // for (let i = 0; i < 5; i++) {
-  //   result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  // }
-  // return result;
 };
 
 //===CHECK IF EMAIL ALREADY EXISTS IN USER OBJ===========
@@ -100,10 +90,10 @@ const users = {
 
 //====GET route to local host==========
 app.get('/', (req, res) => {
-  const userID = req.cookies.userID;
+  const userID = req.session.userID;
 
   const user = users[userID];
-  const userURLS = urlsForUser(req.cookies.userID);
+  const userURLS = urlsForUser(req.session.userID);
 
   if (!user) {
     return res.render('new-user');
@@ -121,10 +111,10 @@ app.get('/', (req, res) => {
 
 //==== GET route to /urls ==========
 app.get('/urls', (req, res) => {
-  const userID = req.cookies.userID;
+  const userID = req.session.userID;
 
   const user = users[userID];
-  const userURLS = urlsForUser(req.cookies.userID);
+  const userURLS = urlsForUser(req.session.userID);
 
   if (!user) {
     return res.render('new-user');
@@ -142,7 +132,7 @@ app.get('/urls', (req, res) => {
 
 //==== GET route to /urls/new ==========
 app.get('/urls/new', (req, res) => {
-  const userID = req.cookies.userID;
+  const userID = req.session.userID;
   console.log(userID);
 
   const user = users[userID];
@@ -167,7 +157,7 @@ app.get('/urls/new', (req, res) => {
 app.get('/urls/:shortURL', (req, res) => {
   const shortURL = req.params.shortURL;
   const longURL = urlDatabase[shortURL];
-  const user = users[req.cookies.userID];
+  const user = users[req.session.userID];
   const templateVars = {
     shortURL,
     longURL,
@@ -182,7 +172,7 @@ app.post('/urls', (req, res) => {
   const shortURL = generateRandomString();
   urlDatabase[shortURL] = {
     longURL: req.body.longURL,
-    userID: req.cookies.userID,
+    userID: req.session.userID,
   };
   console.log(urlDatabase);
   res.redirect(`/urls/${shortURL}`);
@@ -210,17 +200,17 @@ app.post('/urls/:shortURL', (req, res) => {
 
   console.log('shortURL', shortURL);
   const longURL = req.body.longURL;
-  const user = users[req.cookies.userID];
+  const user = users[req.session.userID];
   urlDatabase[shortURL] = {
     longURL,
-    userID: req.cookies.userID,
+    userID: req.session.userID,
   };
   res.redirect('/urls');
 });
 
 //==== GET route to /login ==========
 app.get('/login', (req, res) => {
-  const user = users[req.cookies.userID];
+  const user = users[req.session.userID];
   const templateVars = { urls: urlDatabase, user };
   res.render('login', templateVars);
 });
@@ -232,30 +222,33 @@ app.post('/login', (req, res) => {
   const { email, password } = req.body; //use object shorthand instead 2 lines above
 
   const user = getUserByEmail(email, users);
-
-  if (!user) {
-    return res.status(403).send("User doesn't exist");
-  }
-  if (user.password !== password) {
+  console.log('user', user);
+  console.log('password', password);
+  console.log(bcrypt.compareSync(password, user.password));
+  //if (!user) {
+  // return res.status(403).send("User doesn't exist");
+  if (!bcrypt.compareSync(password, user.password)) {
+    //if (user.password !== password) {
     return res.status(403).send('Incorrect password');
+  } else {
+    //res.cookie('userID', user.id);
+    req.session.userID = user.id;
+    res.redirect('/urls');
   }
-
-  res.cookie('userID', user.id);
-
-  res.redirect('/urls');
 });
 
 //=====Create POST route for /logout => clear the cookie when user logout=============
 app.post('/logout', (req, res) => {
   //clearing the cookie is in fact how you log out
   // having a cookies mean you are log in, how you know if the user is log in or not
-  res.clearCookie('userID');
+  //res.clearCookie('userID');
+  req.session = null;
   res.redirect('/login');
 });
 
 //======= GET route to /register ==========
 app.get('/register', (req, res) => {
-  const user = users[req.cookies.userID];
+  const user = users[req.session.userID];
   const templateVars = { urls: urlDatabase, user };
   res.render('register', templateVars);
 });
@@ -263,8 +256,12 @@ app.get('/register', (req, res) => {
 //======= POST route to /register ==========
 app.post('/register', (req, res) => {
   const userID = generateRandomString();
+
   const email = req.body.email;
   const password = req.body.password;
+
+  const salt = bcrypt.genSaltSync(10);
+  const hashedPassword = bcrypt.hashSync(password, salt);
 
   if (email === '' || password === '') {
     return res.status(400).send('Error400: Missing either email or password');
@@ -277,10 +274,11 @@ app.post('/register', (req, res) => {
   users[userID] = {
     id: userID,
     email,
-    password,
+    password: hashedPassword,
   };
 
-  res.cookie('userID', userID);
+  //res.cookie('userID', userID);
+  req.session.userID = userID;
   res.redirect('/urls');
 });
 
