@@ -145,11 +145,17 @@ app.get('/urls/:shortURL', (req, res) => {
   const shortURL = req.params.shortURL;
   const longURL = urlDatabase[shortURL];
   const user = users[req.session.userID];
+  const id = req.session.userID;
+
+  if (!user || longURL.userID !== id) {
+    return res.send('You Do Not Own This Urls');
+  }
   const templateVars = {
     shortURL,
     longURL,
     user,
   };
+
   res.render('urls_show', templateVars);
 });
 
@@ -175,7 +181,13 @@ app.get('/u/:shortURL', (req, res) => {
 //==== Create DELETE route using POST ==========
 app.post('/urls/:shortURL/delete', (req, res) => {
   const shortURL = req.params.shortURL;
+  const longURL = urlDatabase[shortURL];
+  const user = users[req.session.userID];
+  const id = req.session.userID;
 
+  if (!user || longURL.userID !== id) {
+    return res.send('Error: You Do Not Own This Urls');
+  }
   delete urlDatabase[shortURL];
   res.redirect('/urls');
 });
@@ -184,10 +196,17 @@ app.post('/urls/:shortURL/delete', (req, res) => {
 app.post('/urls/:shortURL', (req, res) => {
   console.log('does it work?');
   const shortURL = req.params.shortURL;
+  const longURL = urlDatabase[shortURL];
+  const id = req.session.userID;
+  const user = users[req.session.userID];
+
+  if (!user || longURL.userID !== id) {
+    return res.send('Error:invalid authentication');
+  }
 
   console.log('shortURL', shortURL);
-  const longURL = req.body.longURL;
-  const user = users[req.session.userID];
+  // const longURL = req.body.longURL;
+
   urlDatabase[shortURL] = {
     longURL,
     userID: req.session.userID,
