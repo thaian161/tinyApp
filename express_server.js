@@ -25,37 +25,9 @@ app.use(express.static(path.join(__dirname, 'public'))); // Enables read access 
 app.use(
   cookieSession({
     name: 'session',
-    keys: ['my', 'key'],
+    keys: ['hello', 'myName', 'isAnn'],
   })
 );
-
-//================HELPER FUNCTIONS===============================
-//======FETCH USER URL (urls belong to users)=========
-const urlsForUser = (userID) => {
-  let userURLS = {};
-  for (let shortURL in urlDatabase) {
-    if (userID === urlDatabase[shortURL].userID) {
-      //this is an object, not an array so we cannot push
-      userURLS[shortURL] = urlDatabase[shortURL];
-    }
-  }
-  return userURLS;
-};
-
-//=====GENERATE RANDOM STRING=======================
-const generateRandomString = () => {
-  return Math.random().toString(36).substring(2, 6);
-};
-
-//===CHECK IF EMAIL ALREADY EXISTS IN USER OBJ===========
-const getUserByEmail = function (email, database) {
-  for (const id in database) {
-    if (database[id].email === email) {
-      return database[id];
-    }
-  }
-  return undefined;
-};
 
 //=======URL DATABASE===========
 const urlDatabase = {
@@ -86,6 +58,21 @@ const users = {
     email: 'hai@bui.com',
     password: 'hai',
   },
+};
+
+//======HELPER FUNCTIONS===========
+const { generateRandomString, getUserByEmail } = require('./helpers');
+
+//==========FETCH USER URL (urls belong to users)===========
+const urlsForUser = (userID) => {
+  let userURLS = {};
+  for (let shortURL in urlDatabase) {
+    if (userID === urlDatabase[shortURL].userID) {
+      //this is an object, not an array so we cannot push
+      userURLS[shortURL] = urlDatabase[shortURL];
+    }
+  }
+  return userURLS;
 };
 
 //====GET route to local host==========
@@ -222,19 +209,20 @@ app.post('/login', (req, res) => {
   const { email, password } = req.body; //use object shorthand instead 2 lines above
 
   const user = getUserByEmail(email, users);
-  console.log('user', user);
-  console.log('password', password);
-  console.log(bcrypt.compareSync(password, user.password));
-  //if (!user) {
-  // return res.status(403).send("User doesn't exist");
+  // console.log('user', user);
+  // console.log('password', password);
+  // console.log(bcrypt.compareSync(password, user.password));
+
+  if (!user) {
+    return res.render('user-doesnot-exist');
+  }
   if (!bcrypt.compareSync(password, user.password)) {
     //if (user.password !== password) {
     return res.status(403).send('Incorrect password');
-  } else {
-    //res.cookie('userID', user.id);
-    req.session.userID = user.id;
-    res.redirect('/urls');
   }
+  //res.cookie('userID', user.id);
+  req.session.userID = user.id;
+  res.redirect('/urls');
 });
 
 //=====Create POST route for /logout => clear the cookie when user logout=============
@@ -268,9 +256,10 @@ app.post('/register', (req, res) => {
   }
 
   if (getUserByEmail(email, users)) {
-    return res.status(400).send('Error400: This email has been registered');
+    return res.render('already-registered');
+    //return res.status(400).send('Error400: This email has been registered');
   }
-
+  //already-registered
   users[userID] = {
     id: userID,
     email,
