@@ -5,6 +5,9 @@ TinyApp is a full stack web application built with Node and Express that allows 
 This is my second project at LHL after [Lotide](https://github.com/thaian161/lotide) - a mini clone of [Lodash](https://lodash.com) library.
 
 ## Final Product
+### [👋 Watch Live Demo Here 👋](https://youtu.be/6-6upefRgmw)
+
+<br/>
 
 !["Welcome to TinyApp,Log-in or Register To Shorten Your URLs "](https://github.com/thaian161/tinyApp/blob/master/docs/welcome-new-user-page.png)
 
