@@ -231,7 +231,7 @@ app.post('/logout', (req, res) => {
   // having a cookies mean you are log in, how you know if the user is log in or not
   //res.clearCookie('userID');
   req.session = null;
-  res.redirect('/login');
+  res.redirect('/urls');
 });
 
 //======= GET route to /register ==========
