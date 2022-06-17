@@ -14,7 +14,7 @@ This is my second project at LHL after [Lotide](https://github.com/thaian161/lot
 
 !["Create Your URLs Page"](https://github.com/thaian161/tinyApp/blob/master/docs/create-urls.png)
 
-!["Edit Your URLs Page"](https://github.com/thaian161/tinyApp/blob/master/docs/edit-page.png)
+!["Edit Your URLs Page"](https://github.com/thaian161/tinyApp/blob/master/docs/edit-url-page.png)
 
 !["My Urls Page"](https://github.com/thaian161/tinyApp/blob/master/docs/my-urls-page.png)
 
