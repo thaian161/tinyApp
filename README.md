@@ -6,30 +6,20 @@ This is my second project at LHL after [Lotide](https://github.com/thaian161/lot
 
 ## Final Product
 
-_Welcome to TinyApp,Log-in or Register To Shorten Your URLs_
 !["Welcome to TinyApp,Log-in or Register To Shorten Your URLs "](https://github.com/thaian161/tinyApp/blob/master/docs/welcome-new-user-page.png)
 
-<br />
-
-_Log-In Page_
 !["Log-In Page"](https://github.com/thaian161/tinyApp/blob/master/docs/login-page.png)
 
-_Register Page_
 !["Register Page"](https://github.com/thaian161/tinyApp/blob/master/docs/register-newuser-page.png)
 
-_Create Your URLs Page_
 !["Create Your URLs Page"](https://github.com/thaian161/tinyApp/blob/master/docs/create-new-url-page.png)
 
-_Edit Your URLs Page_
 !["Edit Your URLs Page"](https://github.com/thaian161/tinyApp/blob/master/docs/edit-page.png)
 
-_My Urls Page_
 !["My Urls Page"](https://github.com/thaian161/tinyApp/blob/master/docs/my-urls.png)
 
-_User Doesn't Exist Page_
 !["User Doesn't Exist Page"](https://github.com/thaian161/tinyApp/blob/master/docs/user-does-not-exist.png)
 
-_User Has Been Registered Page_
 !["User Has Been Registered Page"](https://github.com/thaian161/tinyApp/blob/master/docs/user-has-been-registered.png)
 
 ## Dependencies
