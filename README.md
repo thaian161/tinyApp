@@ -12,11 +12,11 @@ This is my second project at LHL after [Lotide](https://github.com/thaian161/lot
 
 !["Register Page"](https://github.com/thaian161/tinyApp/blob/master/docs/register-newuser-page.png)
 
-!["Create Your URLs Page"](https://github.com/thaian161/tinyApp/blob/master/docs/create-new-url-page.png)
+!["Create Your URLs Page"](https://github.com/thaian161/tinyApp/blob/master/docs/create-urls.png)
 
 !["Edit Your URLs Page"](https://github.com/thaian161/tinyApp/blob/master/docs/edit-page.png)
 
-!["My Urls Page"](https://github.com/thaian161/tinyApp/blob/master/docs/my-urls.png)
+!["My Urls Page"](https://github.com/thaian161/tinyApp/blob/master/docs/my-urls-page.png)
 
 !["User Doesn't Exist Page"](https://github.com/thaian161/tinyApp/blob/master/docs/user-does-not-exist.png)
 
