@@ -11,7 +11,7 @@ This is my second project at LHL after [Lotide](https://github.com/thaian161/lot
 
 ### [👋 Watch Live Demo Here 👋](https://youtu.be/6-6upefRgmw)
 
-#### _Welcome to TinyApp,Log-in or Register To Shorten Your URLs Page_
+#### _Welcome to TinyApp, Log-in or Register To Shorten Your URLs Page_
 
 !["Welcome to TinyApp, Log-in or Register To Shorten Your URLs "](https://github.com/thaian161/tinyApp/blob/master/docs/welcome-new-user-page.png)
 
