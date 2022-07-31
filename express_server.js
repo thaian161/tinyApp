@@ -1,7 +1,7 @@
 //require('dotenv').config(); // Reads the content of .env and add them to process.env
 const express = require('express'); // Imports the express framework / library
 const path = require('path'); // Compat for file paths
-const PORT = 3000; // default port 8080
+const PORT = 3001; // default port 8080
 const morgan = require('morgan');
 const bodyParser = require('body-parser'); //The body-parser library will convert the request body from a Buffer into string that we can read. It will then add the data to the req(request) object under the key body.
 const cookieParser = require('cookie-parser'); // // Parses the cookie string to fancy cookie object
